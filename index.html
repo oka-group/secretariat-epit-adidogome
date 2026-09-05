@@ -4,12 +4,17 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Secrétariat EPIT Adidogomé</title>
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SECRETARIAT ADIDOGOMÉ">
+<meta name="theme-color" content="#0F1B4C">
 <meta name="description" content="Enregistrez-vous en tant que nouveau venu, converti, baptisé ou membre de l'Assemblée EPIT Adidogomé. Rejoignez notre famille spirituelle en quelques clics.">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Secrétariat EPIT Adidogomé">
 <meta property="og:description" content="Enregistrez-vous en tant que nouveau venu, converti, baptisé ou membre de l'Assemblée EPIT Adidogomé. Rejoignez notre famille spirituelle en quelques clics.">
-<meta property="og:image" content="https://oke97684058-arch.github.io/secretariat-epit-adidogome/og-image.jpg">
-<meta property="og:url" content="https://oke97684058-arch.github.io/secretariat-epit-adidogome/">
+<meta property="og:image" content="https://oka-group.github.io/secretariat-epit-adidogome/og-image.jpg">
+<meta property="og:url" content="https://oka-group.github.io/secretariat-epit-adidogome/">
 <meta name="twitter:card" content="summary_large_image">
 <style>
 :root{
@@ -403,6 +408,7 @@ tr:nth-child(even) td{background:var(--off);}
           <textarea id="bc-msg" placeholder="Écrivez ici le message à diffuser..."></textarea>
         </div>
         <button class="btn btn-gold" onclick="renderBroadcastList()">Générer la liste d'envoi</button>
+        <button class="btn btn-navy" style="background:#fff;border:1.5px solid var(--navy);color:var(--navy);margin-top:10px;" onclick="exportContactsCSV()">📇 Exporter les contacts (pour Google/WhatsApp)</button>
       </div>
       <div class="card" style="padding:0;overflow:hidden;">
         <div class="table-wrap">
@@ -753,6 +759,21 @@ function renderBroadcastList(){
       <td>${x.phone}</td>
       <td><a href="https://wa.me/${x.phone.replace(/\D/g,'')}?text=${encoded}" target="_blank" style="display:inline-block;background:#25D366;color:#fff;border-radius:6px;padding:5px 10px;font-size:.72rem;font-weight:700;text-decoration:none;">📲 Envoyer</a></td>
     </tr>`).join('');
+}
+
+function exportContactsCSV(){
+  const filterCat=document.getElementById('bc-filter').value;
+  const lb={nouveau_venu:'EPIT Nouveau venu',converti:'EPIT Converti',baptise:'EPIT Baptisé',membre:'EPIT Membre',enfant:'EPIT Enfant'};
+  let list = inscriptions;
+  if(filterCat!=='tous') list = list.filter(x=>x.cat===filterCat);
+  if(!list.length){alert('Aucun inscrit dans cette catégorie.');return;}
+  const prefix = filterCat==='tous' ? 'EPIT' : (lb[filterCat]||'EPIT');
+  const rows = list.map(x=>[`${prefix} - ${x.nom}`, x.phone]);
+  const csv=[['Name','Phone 1 - Value'], ...rows].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8;'}));
+  a.download=`contacts_${filterCat}_epit.csv`;
+  a.click();
 }
 </script>
 </body>
