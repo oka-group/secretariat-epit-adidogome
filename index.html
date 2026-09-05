@@ -270,9 +270,7 @@ tr:nth-child(even) td{background:var(--off);}
     <div class="success-icon">🙏</div>
     <h3>Enregistrement réussi !</h3>
     <p id="success-msg"></p>
-    <a id="wa-link" class="wa-btn" href="#" target="_blank">📲 Recevoir le message de bienvenue</a>
-    <br><br>
-    <button class="btn btn-navy" onclick="reset()" style="max-width:280px;margin:0 auto;">Enregistrer une autre personne</button>
+    <button class="btn btn-navy" onclick="reset()" style="max-width:280px;margin:16px auto 0;">Enregistrer une autre personne</button>
   </div>
 </div>
 
@@ -560,7 +558,6 @@ async function submit(){
   document.getElementById('form-container').style.display='none';
   const sb=document.getElementById('success-box'); sb.classList.add('show');
   document.getElementById('success-msg').innerHTML=getMsg(r);
-  document.getElementById('wa-link').href=getWA(r);
 }
 
 function getMsg(r){
